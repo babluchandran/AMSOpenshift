@@ -15,77 +15,7 @@ namespace AMSDemo.Controllers
     {
         private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        //[HttpPost]
-        //public IActionResult ProcessOPLDNPushTOMQ1()
-        //{
-        //    try
-        //    {
-        //        log.Info(DateTime.Now.ToString() + " AMS-POC: OPLD file processing started.");
-
-        //        //Process OPLD data             
-        //        var opldProcString = Request.Headers["opldProcString"];
-
-        //        OPLD opldObject = Newtonsoft.Json.JsonConvert.DeserializeObject<OPLD>(opldProcString);
-
-        //        log.Info(DateTime.Now.ToString() + " AMS-POC: OPLD file processing completed.");
-
-        //        //Push OPLD in to Active MQ1
-        //        if (!string.IsNullOrEmpty(opldObject.TrackingNumber))
-        //        {
-        //            CommonUtility<OPLD>.PushToActiveMQ(opldObject, 1);
-
-        //            log.Info(DateTime.Now.ToString() + " AMS-POC: OPLD message pushed to MQ1.");
-        //        }
-        //        else
-        //        {
-        //            log.Warn(DateTime.Now.ToString() + " AMS-POC: Tracking number not found in OPLD message.");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        log.Error(DateTime.Now.ToString() + " AMS-POC: " + Convert.ToString(ex.Message));
-        //        return new JsonResult(new { Result = System.Net.HttpStatusCode.InternalServerError });
-        //    }
-
-        //    return Ok(new { Result = "Success" });
-        //}
-               
-        [HttpPost]
-        public IActionResult ProcessOPLDNPushTOMQ1(OPLD opldObject)
-        {
-            try
-            {
-                //log.Info(DateTime.Now.ToString() + " AMS-POC: OPLD file processing started.");
-
-                //Process OPLD data             
-                //var opldProcString = Request.Headers["opldProcString"];
-
-                //OPLD opldObject = Newtonsoft.Json.JsonConvert.DeserializeObject<OPLD>(opldProcString);
-
-                //log.Info(DateTime.Now.ToString() + " AMS-POC: OPLD file processing completed.");
-
-                //Push OPLD in to Active MQ1
-                if (!string.IsNullOrEmpty(opldObject.TrackingNumber))
-                {
-                    CommonUtility<OPLD>.PushToActiveMQ(opldObject, 1);
-
-                    log.Info(DateTime.Now.ToString() + " AMS-POC: OPLD message pushed to MQ1.");
-                }
-                else
-                {
-                    log.Warn(DateTime.Now.ToString() + " AMS-POC: Tracking number not found in OPLD message.");
-                }
-            }
-            catch (Exception ex)
-            {
-                log.Error(DateTime.Now.ToString() + " AMS-POC: " + Convert.ToString(ex.Message));
-                return new JsonResult(new { Result = System.Net.HttpStatusCode.InternalServerError });
-            }
-
-            return Ok(new { Result = "Success" });
-        }
-        
+                
         public void OPLDFileWatcher()
         {
             try
@@ -106,7 +36,8 @@ namespace AMSDemo.Controllers
                         var opldObject = OPLDUtility.ProcessOPLD(opldString);
 
                         //Check is File already Processed
-                        SakilaContext context = new SakilaContext("server=127.0.01;port=3306;database=ams;user=root;password=techM@Ups1");                        
+                        //SakilaContext context = new SakilaContext("server=127.0.01;port=3306;database=ams;user=root;password=techM@Ups1");                        
+                        SakilaContext context = new SakilaContext("server=techm.cooavdyjxzoz.us-east-1.rds.amazonaws.com;port=3306;database=sakila;user=root;password=Password123");
 
                         //bool trackResult = context.CheckIsTrackingNumberAlreadyExists(opldObject.TrackingNumber);
                         //if (trackResult)
@@ -170,7 +101,8 @@ namespace AMSDemo.Controllers
                                         //Process DIALS data
                                         var dialsObject = DIALSUtility.ProcessDIALSData(dialsString);
 
-                                        SakilaContext context = new SakilaContext("server=127.0.01;port=3306;database=ams;user=root;password=techM@Ups1");
+                                        //SakilaContext context = new SakilaContext("server=127.0.01;port=3306;database=ams;user=root;password=techM@Ups1");
+                                        SakilaContext context = new SakilaContext("server=techm.cooavdyjxzoz.us-east-1.rds.amazonaws.com;port=3306;database=sakila;user=root;password=Password123");
                                         DIALS dials = context.GetMatchingDialsID(dialsObject.TrackingNumber);
 
                                         //Store in to DB
@@ -211,59 +143,7 @@ namespace AMSDemo.Controllers
             }
             
         }
-
-        //MicroService 1
-        //[HttpPost]
-        // public IActionResult ProcessOPLDNPushTOMQ1()
-        // {
-        //     try
-        //     {
-        //         log.Info(DateTime.Now.ToString() + " AMS-POC: OPLD file processing started.");
-        //         string opldFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "OPLDFiles");
-
-        //         if (Directory.Exists(opldFolderPath))
-        //         {
-        //             var files = Directory.GetFiles(opldFolderPath);
-
-        //             if (files.Length > 0)
-        //             {
-        //                 foreach (string fileName in files)
-        //                 {
-        //                     log.Info(DateTime.Now.ToString() + " AMS-POC: OPLD file processing in progress.");
-        //                     string opldString = System.IO.File.ReadAllText(Path.Combine(opldFolderPath, fileName));
-
-        //                     //Process OPLD data
-        //                     var opldObject = OPLDUtility.ProcessOPLD(opldString);
-
-        //                     log.Info(DateTime.Now.ToString() + " AMS-POC: OPLD file processing completed.");
-
-        //                     //Push OPLD in to Active MQ1
-        //                     if (!string.IsNullOrEmpty(opldObject.TrackingNumber))
-        //                     {
-        //                         CommonUtility<OPLD>.PushToActiveMQ(opldObject, 1);
-
-        //                         log.Info(DateTime.Now.ToString() + " AMS-POC: OPLD message pushed to MQ1.");
-        //                     }
-        //                     else {
-        //                         log.Warn(DateTime.Now.ToString() + " AMS-POC: Tracking number not found in OPLD message.");
-        //                     }
-        //                 }
-        //             }
-        //             else
-        //             {
-        //                 log.Warn(DateTime.Now.ToString() + " AMS-POC: Tracking number not found in OPLD message.");
-        //             }
-        //         }
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         log.Error(DateTime.Now.ToString() + " AMS-POC: " + Convert.ToString(ex.Message));
-        //         return new JsonResult(new { Result = System.Net.HttpStatusCode.InternalServerError });
-        //     }
-
-        //     return Ok();
-        // }
-
+        
         //MicroService 2
         [HttpPost]
         public IActionResult MicroServiceProcessOPLDFile(OPLD opldObject)
@@ -271,8 +151,8 @@ namespace AMSDemo.Controllers
             try
             {
                 //Push OPLD in DB
-                //SakilaContext context = HttpContext.RequestServices.GetService(typeof(SakilaContext)) as SakilaContext;
-                SakilaContext context = new SakilaContext("server=127.0.01;port=3306;database=ams;user=root;password=techM@Ups1");
+                //SakilaContext context = new SakilaContext("server=127.0.01;port=3306;database=ams;user=root;password=techM@Ups1");
+                SakilaContext context = new SakilaContext("server=techm.cooavdyjxzoz.us-east-1.rds.amazonaws.com;port=3306;database=sakila;user=root;password=Password123");
                 context.AddNewOPLD(opldObject);
 
                 log.Info(DateTime.Now.ToString() + " AMS-POC-MicroServiceProcessOPLDNDIALSFiles: OPLD Data inserted in DB.");
@@ -296,7 +176,8 @@ namespace AMSDemo.Controllers
         {
             try
             {
-                SakilaContext context = new SakilaContext("server=127.0.01;port=3306;database=ams;user=root;password=techM@Ups1");
+                //SakilaContext context = new SakilaContext("server=127.0.01;port=3306;database=ams;user=root;password=techM@Ups1");
+                SakilaContext context = new SakilaContext("server=techm.cooavdyjxzoz.us-east-1.rds.amazonaws.com;port=3306;database=sakila;user=root;password=Password123");
                 context.AddNewDIALS(dialsObject);
 
             }
