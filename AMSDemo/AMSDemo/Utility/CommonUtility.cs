@@ -9,7 +9,8 @@ namespace AMSDemo.Utility
     {
         public static void PushToActiveMQ(T opldObject, int queueNumber)
         {
-            Uri connecturi = new Uri("activemq:tcp://localhost:61616");
+            //Uri connecturi = new Uri("activemq:tcp://localhost:61616");\
+            Uri connecturi = new Uri("activemq:tcp://54.173.238.145:61616");
 
             // NOTE: ensure the nmsprovider-activemq.config file exists in the executable folder.
             IConnectionFactory factory = new NMSConnectionFactory(connecturi);
@@ -43,7 +44,7 @@ namespace AMSDemo.Utility
         {
             try
             {
-                Uri connecturi = new Uri("activemq:tcp://localhost:61616");
+                Uri connecturi = new Uri("activemq:tcp://54.173.238.145:61616");
 
                 // NOTE: ensure the nmsprovider-activemq.config file exists in the executable folder.
                 IConnectionFactory factory = new NMSConnectionFactory(connecturi);
