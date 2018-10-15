@@ -20,8 +20,9 @@ namespace AMSMicroService2
         //private static System.Timers.Timer aTimer;
         public static void Main(string[] args)
         {
-            IConnectionFactory factory = new ConnectionFactory("activemq:tcp://localhost:61616");
-            
+            //IConnectionFactory factory = new ConnectionFactory("activemq:tcp://localhost:61616");
+            IConnectionFactory factory = new ConnectionFactory("activemq:tcp://54.173.238.145:61616");
+
             IConnection _connection = factory.CreateConnection();
             _connection.Start();
             ISession _session = _connection.CreateSession();
