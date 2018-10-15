@@ -24,7 +24,8 @@ namespace AMSMicroService2.Controllers
             {
                 log.Info(DateTime.Now.ToString() + " AMS-POC-MicroServiceServicePointGeneration: Read OPLD message and Start processing.");
                 //CreateServicepoint                          
-                SakilaContext context = new SakilaContext("server=127.0.01;port=3306;database=ams;user=root;password=techM@Ups1");//HttpContext.RequestServices.GetService(typeof(SakilaContext)) as SakilaContext;
+                //SakilaContext context = new SakilaContext("server=127.0.01;port=3306;database=ams;user=root;password=techM@Ups1");
+                SakilaContext context = new SakilaContext("server=techm.cooavdyjxzoz.us-east-1.rds.amazonaws.com;port=3306;database=sakila;user=root;password=Password123");
 
                 log.Info(DateTime.Now.ToString() + " AMS-POC-MicroServiceServicePointGeneration: Getting OPLD tracking number matching DIALS record.");
                 //Check if opld tracking number matches with dials matching number
