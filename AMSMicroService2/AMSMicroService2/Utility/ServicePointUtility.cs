@@ -25,7 +25,7 @@ namespace AMSMicroService2.Utility
             servicePoint.StateCode = opldDetails.StateCode;
             servicePoint.ZipCode = opldDetails.ZipCode;
 
-            servicePoint.ConsigneeName = clarifiedSignature;
+            servicePoint.ConsigneeName = string.IsNullOrEmpty(consigneeName) ? opldDetails.AttentionName : consigneeName;
             servicePoint.SignatureClarify = clarifiedSignature;
 
             servicePoint.ServicePointStatus = (isMatch ? "Match found between OPld and DIALS" : "No Match found between OPld and DIALS");
